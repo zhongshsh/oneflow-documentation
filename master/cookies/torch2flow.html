@@ -735,7 +735,7 @@
                 
                 <p>自然语言处理、图像等深度学习领域常使用预训练模型+微调机制来快速解决具体任务，优化器参数等实验信息往往也有存储需求。因此，在使用 OneFlow 进行模型训练时，不可避免地会遇到如何将 Pytorch 存储的预训练模型转为 OneFlow 模型的问题。</p>
 <h1 id="_1">转换示例<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p>将 Pytorch 存储的数据（无论是模型还是变量等等）转换成 OneFlow 的思路是 <strong>使用 Numpy 作为二者的中介</strong>，具体如下示例所示。</p>
+<p>将 Pytorch 存储的数据（无论是模型还是变量等等）转换成 OneFlow 的思路是 <strong>使用 Numpy 作为二者的媒介</strong>，具体如下示例所示。</p>
 <p>首先我们使用 Pytorch 定义一个简单模型，并将其保存为 <code>pth</code> 文件。</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
