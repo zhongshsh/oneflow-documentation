@@ -18,7 +18,7 @@
     
     
       
-        <title>将 Pytorch 存储的预训练模型转为 OneFlow 模型 - OneFlow</title>
+        <title>将 PyTorch 预训练模型转为 OneFlow 格式 - OneFlow</title>
       
     
     
@@ -69,7 +69,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#pytorch-oneflow" class="md-skip">
           跳转至
         </a>
       
@@ -104,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              将 Pytorch 存储的预训练模型转为 OneFlow 模型
+              将 PyTorch 预训练模型转为 OneFlow 格式
             
           </span>
         </div>
@@ -640,20 +640,24 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          将 Pytorch 存储的预训练模型转为 OneFlow 模型
+          将 PyTorch 预训练模型转为 OneFlow 格式
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="torch2flow.html" class="md-nav__link md-nav__link--active">
-        将 Pytorch 存储的预训练模型转为 OneFlow 模型
+        将 PyTorch 预训练模型转为 OneFlow 格式
       </a>
       
         
 <nav class="md-nav md-nav--secondary" aria-label="目录">
   
   
+  
+    
   
   
     <label class="md-nav__title" for="__toc">
@@ -748,6 +752,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -786,12 +792,10 @@
                   </a>
                 
                 
-                  <h1>将 Pytorch 存储的预训练模型转为 OneFlow 模型</h1>
-                
-                <p>自然语言处理、图像等深度学习领域常使用预训练模型+微调机制来快速解决具体任务，优化器参数等实验信息往往也有存储需求。因此，在使用 OneFlow 进行模型训练时，不可避免地会遇到如何将 Pytorch 存储的预训练模型转为 OneFlow 模型的问题。</p>
+                <h1 id="pytorch-oneflow">将 PyTorch 预训练模型转为 OneFlow 格式<a class="headerlink" href="#pytorch-oneflow" title="Permanent link">&para;</a></h1>
+<p>当需要使用 PyTorch 的预训练模型时，可以利用 OneFlow 与 PyTorch 模型接口对齐的特点，将 PyTorch 预训练模型，转存为 OneFlow 模型。</p>
 <h2 id="_1">转换示例<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>将 Pytorch 存储的数据（无论是模型还是变量等等）转换成 OneFlow 的思路是 <strong>使用 Numpy 作为二者的媒介</strong>，具体如下示例所示。</p>
-<p>首先我们使用 Pytorch 定义一个简单模型，并将其保存为 <code>pth</code> 文件。</p>
+<p>我们将定义一个 PyTorch 模型并保存，然后展示如何将其转换成 OneFlow 模型。</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 
@@ -804,7 +808,12 @@
 
 <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">save_file</span><span class="p">)</span>
 </code></pre></div>
-<p>接着，我们需要定义一个具有 <strong>相同结构</strong> 的 OneFlow 版本的模型。</p>
+<p>运行以上代码，将得到 PyTorch 模型文件 <code>model.pth</code> 。将它转为 OneFlow 版本的模型包括两个主要步骤：</p>
+<ul>
+<li>定义一个具有 <strong>相同结构</strong> 的 OneFlow 模型</li>
+<li>加载 PyTorch 存储的模型文件 <code>model.pth</code>，并将模型参数初始化到 OneFlow 版本的模型中</li>
+</ul>
+<p>代码如下所示：</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">oneflow</span> <span class="k">as</span> <span class="nn">flow</span>
 <span class="kn">import</span> <span class="nn">oneflow.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 
@@ -812,73 +821,19 @@
     <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> 
     <span class="n">nn</span><span class="o">.</span><span class="n">Softmax</span><span class="p">()</span>
 <span class="p">)</span>
-</code></pre></div>
-<p>最后，我们加载 Pytorch 存储的模型文件 <code>model.pth</code>，并将其初始化到 OneFlow 版本的模型中。</p>
-<div class="highlight"><pre><span></span><code><span class="n">parameters</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">save_file</span><span class="p">)</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
-
-<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">val</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-    <span class="n">parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
-
-<span class="n">model_flow</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
-</code></pre></div>
-<p>我们可以通过如下代码检验模型是否加载成功。</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
-
-<span class="n">save_file</span> <span class="o">=</span> <span class="s1">&#39;model.pth&#39;</span>
-
-<span class="n">model_torch</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
-    <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> 
-    <span class="n">nn</span><span class="o">.</span><span class="n">Softmax</span><span class="p">()</span>
-<span class="p">)</span>
-
-<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model_torch</span><span class="p">,</span> <span class="n">save_file</span><span class="p">)</span>
-
-<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">model_torch</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;torch init: </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
-<span class="kn">import</span> <span class="nn">oneflow</span> <span class="k">as</span> <span class="nn">flow</span>
-<span class="kn">import</span> <span class="nn">oneflow.nn</span> <span class="k">as</span> <span class="nn">nn</span>
-
-<span class="n">model_flow</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
-    <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> 
-    <span class="n">nn</span><span class="o">.</span><span class="n">Softmax</span><span class="p">()</span>
-<span class="p">)</span>
-
-<span class="n">x</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">model_flow</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;oneflow init: </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="n">parameters</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">save_file</span><span class="p">)</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+
 <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">val</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
     <span class="n">parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
 
 <span class="n">model_flow</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">model_flow</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;torch to oneflow: </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </code></pre></div>
-<p>输出如下：</p>
-<div class="highlight"><pre><span></span><code>torch init: 
- tensor<span class="o">([[</span><span class="m">0</span>.4520, <span class="m">0</span>.5480<span class="o">]</span>,
-        <span class="o">[</span><span class="m">0</span>.6272, <span class="m">0</span>.3728<span class="o">]</span>,
-        <span class="o">[</span><span class="m">0</span>.6275, <span class="m">0</span>.3725<span class="o">]</span>,
-        <span class="o">[</span><span class="m">0</span>.5735, <span class="m">0</span>.4265<span class="o">]]</span>, <span class="nv">grad_fn</span><span class="o">=</span>&lt;SoftmaxBackward0&gt;<span class="o">)</span>
-oneflow init: 
- tensor<span class="o">([[</span><span class="m">0</span>.9034, <span class="m">0</span>.0966<span class="o">]</span>,
-        <span class="o">[</span><span class="m">0</span>.8312, <span class="m">0</span>.1688<span class="o">]</span>,
-        <span class="o">[</span><span class="m">0</span>.3003, <span class="m">0</span>.6997<span class="o">]</span>,
-        <span class="o">[</span><span class="m">0</span>.7384, <span class="m">0</span>.2616<span class="o">]]</span>, <span class="nv">dtype</span><span class="o">=</span>oneflow.float32, <span class="nv">grad_fn</span><span class="o">=</span>&lt;softmax_backward&gt;<span class="o">)</span>
-torch to oneflow: 
- tensor<span class="o">([[</span><span class="m">0</span>.4520, <span class="m">0</span>.5480<span class="o">]</span>,
-        <span class="o">[</span><span class="m">0</span>.6272, <span class="m">0</span>.3728<span class="o">]</span>,
-        <span class="o">[</span><span class="m">0</span>.6275, <span class="m">0</span>.3725<span class="o">]</span>,
-        <span class="o">[</span><span class="m">0</span>.5735, <span class="m">0</span>.4265<span class="o">]]</span>, <span class="nv">dtype</span><span class="o">=</span>oneflow.float32, <span class="nv">grad_fn</span><span class="o">=</span>&lt;softmax_backward&gt;<span class="o">)</span>
-</code></pre></div>
+<p>我们可以发现，通过 <code>.state_dict()</code> 获取到以 <code>key-value</code> 形式存储的模型参数后，我们通过 <code>.detach().cpu().numpy()</code> 即将梯度阻断后的参数值转换成 Numpy 类型，最后通过 <code>.load_state_dict(parameters)</code> 将模型参数传递到 OneFlow 模型中。</p>
+<p>通过上述简单示例，我们可以发现将 PyTorch 存储的数据（无论是模型还是变量等等）转换成 OneFlow 的思路是 <strong>使用 Numpy 作为二者的媒介</strong>，只要确保 PyTorch 和 OneFlow 定义的模型是一致的，那么无论多么复杂的模型都可以通过上述方式转换。</p>
 <h2 id="_2">拓展<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>torchvision 中有许多预训练的图像模型，那么如何将 torchvision 中的预训练模型转为 OneFlow 模型呢？以经典的  AlexNet 为例，转换代码如下所示：</p>
+<p><a href="https://github.com/Oneflow-Inc/vision">flowvision</a> 与 torchvision 相同，提供了许多预训练好的模型，同时 flowvision 各个模型能够做到与 torchvision 对齐。在这一部分，我们使用 flowvision，以经典的 AlexNet 为例，看看如何将 PyTorch 中 <strong>复杂的预训练模型</strong> 转换成 OneFlow 版本。转换代码如下所示：</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torchvision.models</span> <span class="k">as</span> <span class="nn">models_torch</span>
 <span class="kn">import</span> <span class="nn">flowvision.models</span> <span class="k">as</span> <span class="nn">models_flow</span>
 
@@ -892,11 +847,8 @@ torch to oneflow:
 
 <span class="n">alexnet_flow</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
 </code></pre></div>
-<p>使用预训练模型进行预测：</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">oneflow</span> <span class="k">as</span> <span class="nn">flow</span>
-
-<span class="n">x</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">63</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">alexnet_flow</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<p>flowvision 也配备了预训练模型，设置 pretrained=True 即可：</p>
+<div class="highlight"><pre><span></span><code><span class="n">alexnet_flow</span> <span class="o">=</span> <span class="n">models_flow</span><span class="o">.</span><span class="n">alexnet</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 <p>关于 flowvision 的详细使用，欢迎访问 <a href="https://flowvision.readthedocs.io/en/latest/index.html">flowvision documentation</a> 。</p>
                 
