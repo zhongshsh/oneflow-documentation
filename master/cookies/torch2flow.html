@@ -833,7 +833,7 @@
 <p>我们可以发现，通过 <code>.state_dict()</code> 获取到以 <code>key-value</code> 形式存储的模型参数后，我们通过 <code>.detach().cpu().numpy()</code> 即将梯度阻断后的参数值转换成 Numpy 类型，最后通过 <code>.load_state_dict(parameters)</code> 将模型参数传递到 OneFlow 模型中。</p>
 <p>通过上述简单示例，我们可以发现将 PyTorch 存储的数据（无论是模型还是变量等等）转换成 OneFlow 的思路是 <strong>使用 Numpy 作为二者的媒介</strong>，只要确保 PyTorch 和 OneFlow 定义的模型是一致的，那么无论多么复杂的模型都可以通过上述方式转换。</p>
 <h2 id="_2">拓展<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p><a href="https://github.com/Oneflow-Inc/vision">flowvision</a> 与 torchvision 相同，提供了许多预训练好的模型，同时 flowvision 各个模型能够做到与 torchvision 对齐。在这一部分，我们使用 flowvision，以经典的 AlexNet 为例，看看如何将 PyTorch 中 <strong>复杂的预训练模型</strong> 转换成 OneFlow 版本。转换代码如下所示：</p>
+<p><a href="https://github.com/Oneflow-Inc/vision">flowvision</a> 与 torchvision 相同，提供了许多预训练好的模型，同时 flowvision 各个模型能够做到与 torchvision 对齐。我们使用 flowvision，以经典的 AlexNet 为例，看看如何将 PyTorch 中 <strong>复杂的预训练模型</strong> 转换成 OneFlow 版本。转换代码如下所示：</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torchvision.models</span> <span class="k">as</span> <span class="nn">models_torch</span>
 <span class="kn">import</span> <span class="nn">flowvision.models</span> <span class="k">as</span> <span class="nn">models_flow</span>
 
