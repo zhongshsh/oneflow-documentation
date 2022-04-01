@@ -11,7 +11,7 @@
       
       
       
-        <link rel="canonical" href="https://docs.oneflow.org/master/parallelism/04_2d-sbp.html">
+        <link rel="canonical" href="https://docs.oneflow.org/parallelism/04_2d-sbp.html">
       
       <link rel="icon" href="../assets/favicon.png">
       <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.1.11">
@@ -690,6 +690,18 @@
   
 
           
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cookies/torch2flow.html" class="md-nav__link">
+        Converting pre-trained model from PyTorch to OneFlow
+      </a>
+    </li>
+  
+
+          
         </ul>
       </nav>
     </li>
@@ -908,9 +920,7 @@ Through comparing these local tensors on different "devices", we can see that it
 </code></pre></div>
 Here, the parameter <code>nproc_per_node</code> is assigned as 4 to create 4 processes, simulating a total of 4 GPUs. For detailed usage of this module, please read: <a href="04_launch.html">DISTRIBUTED TRAINING LAUNCHER</a>.</p>
 <p>The complete code is as follows:</p>
-<details class="code">
-<summary>Code</summary>
-<div class="highlight"><pre><span></span><code><span class="n">PLACEMENT</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">placement</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<details class="code"><summary>Code</summary><div class="highlight"><pre><span></span><code><span class="n">PLACEMENT</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">placement</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
 <span class="n">BROADCAST</span> <span class="o">=</span> <span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">sbp</span><span class="o">.</span><span class="n">broadcast</span><span class="p">,</span> <span class="n">flow</span><span class="o">.</span><span class="n">sbp</span><span class="o">.</span><span class="n">broadcast</span><span class="p">)</span>
 <span class="n">BS0</span> <span class="o">=</span> <span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">sbp</span><span class="o">.</span><span class="n">broadcast</span><span class="p">,</span> <span class="n">flow</span><span class="o">.</span><span class="n">sbp</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
 
