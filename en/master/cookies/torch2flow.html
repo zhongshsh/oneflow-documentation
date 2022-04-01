@@ -668,14 +668,14 @@
       
         <li class="md-nav__item">
   <a href="#example-of-model-conversion" class="md-nav__link">
-    Example of model conversion
+    Example of Model Conversion
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#more-information-about-flowvision" class="md-nav__link">
-    More information about flowvision
+    More Information about FlowVision
   </a>
   
 </li>
@@ -763,14 +763,14 @@
       
         <li class="md-nav__item">
   <a href="#example-of-model-conversion" class="md-nav__link">
-    Example of model conversion
+    Example of Model Conversion
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#more-information-about-flowvision" class="md-nav__link">
-    More information about flowvision
+    More Information about FlowVision
   </a>
   
 </li>
@@ -793,9 +793,9 @@
                 
                 
                 <h1 id="converting-pre-trained-model-from-pytorch-to-oneflow">Converting Pre-trained Model from PyTorch to OneFlow<a class="headerlink" href="#converting-pre-trained-model-from-pytorch-to-oneflow" title="Permanent link">&para;</a></h1>
-<p>Since interfaces of OneFlow model and PyTorch model is compatible, you can convert a pre-trained model from PyTorch to OneFlow when you need to use a PyTorch pre-trained model.</p>
-<h2 id="example-of-model-conversion">Example of model conversion<a class="headerlink" href="#example-of-model-conversion" title="Permanent link">&para;</a></h2>
-<p>In the following code, we will define and save a PyTorch model and then convert it to a OneFlow model. </p>
+<p>Since interfaces of OneFlow and PyTorch are compatible, we can convert a pre-trained model from PyTorch to OneFlow when it's needed to use a PyTorch pre-trained model.</p>
+<h2 id="example-of-model-conversion">Example of Model Conversion<a class="headerlink" href="#example-of-model-conversion" title="Permanent link">&para;</a></h2>
+<p>In the following code, we define and save a PyTorch model and then convert it to a OneFlow model. </p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="n">save_file</span> <span class="o">=</span> <span class="s1">&#39;model.pth&#39;</span>
@@ -805,10 +805,10 @@
 <span class="p">)</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">save_file</span><span class="p">)</span>
 </code></pre></div>
-<p>After running the above code, we get a  <code>model.pth</code> file of PyTorch model. Then, the following two steps enable us to covert a PyTorch model to a OneFlow model：</p>
+<p>After running the above code, we get a <code>model.pth</code> file of PyTorch model. Then, the following two steps enable us to covert a PyTorch model to a OneFlow model：</p>
 <ul>
-<li>defining a OneFlow model with <strong>the same structure</strong></li>
-<li>loading the <code>model.pth</code> file and initializing model parameters into OneFlow model</li>
+<li>Defining a OneFlow model with <strong>the same structure</strong></li>
+<li>Loading the <code>model.pth</code> file and initializing model parameters into OneFlow model</li>
 </ul>
 <p>Code is shown below:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">oneflow</span> <span class="k">as</span> <span class="nn">flow</span>
@@ -824,10 +824,10 @@
     <span class="n">parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
 <span class="n">model_flow</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
 </code></pre></div>
-<p><code>.state_dict()</code> enables to obtain model parameters defined by <code>key-value</code> . Then, we use <code>.detach().cpu().numpy()</code> to convert parameter value that gradients are blocked into Numpy. Lastly,  <code>.load_state_dict(parameters)</code> allows to pass model parameters to OneFlow model. </p>
-<p>With the simple example described above, we can find that the approach to convert data that is saved by PyTorch model into OneFlow is to <strong>use Numpy as a bridge</strong>. Therefore, provided the models defined by PyTorch and by OneFlow are compatible, even complicated models can still be smoothly converted.</p>
-<h2 id="more-information-about-flowvision">More information about flowvision<a class="headerlink" href="#more-information-about-flowvision" title="Permanent link">&para;</a></h2>
-<p>Same as torchvision, <a href="https://github.com/Oneflow-Inc/vision">flowvision</a> also provides many pre-trained models, and the models in flowvision are compatible with those in torchvision. Taking AlexNet for example, flowvision enables us to convert <strong>complicate PyTorch pre-trained models</strong> into OneFlow by running the following code: </p>
+<p><code>.state_dict()</code> enables us to obtain model parameters defined by <code>key-value</code>. Then, we use <code>.detach().cpu().numpy()</code> to convert parameter whose gradients are blocked into Numpy. Lastly,  <code>.load_state_dict(parameters)</code> allows to pass model parameters to OneFlow model. </p>
+<p>With the simple example described above, we can find that the approach to convert PyTorch model into OneFlow is to <strong>use Numpy as a bridge</strong>. Therefore, provided the models defined by PyTorch and by OneFlow whose structures are consistent, even complicated models can still be smoothly converted.</p>
+<h2 id="more-information-about-flowvision">More Information about FlowVision<a class="headerlink" href="#more-information-about-flowvision" title="Permanent link">&para;</a></h2>
+<p>Same as torchvision, <a href="https://github.com/Oneflow-Inc/vision">flowvision</a> also provides many pre-trained models, and the models in flowvision are compatible with those in torchvision. Taking AlexNet in flowvision for example, we will show how to convert <strong>complicate PyTorch pre-trained models</strong> into OneFlow by running the following code: </p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torchvision.models</span> <span class="k">as</span> <span class="nn">models_torch</span>
 <span class="kn">import</span> <span class="nn">flowvision.models</span> <span class="k">as</span> <span class="nn">models_flow</span>
 <span class="n">alexnet_torch</span> <span class="o">=</span> <span class="n">models_torch</span><span class="o">.</span><span class="n">alexnet</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -838,7 +838,7 @@
     <span class="n">parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
 <span class="n">alexnet_flow</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
 </code></pre></div>
-<p>You can also use pre-trained models provided in flowvision by importing the following code:</p>
+<p>We can also use pre-trained models provided in flowvision by importing the following code:</p>
 <div class="highlight"><pre><span></span><code><span class="n">alexnet_flow</span> <span class="o">=</span> <span class="n">models_flow</span><span class="o">.</span><span class="n">alexnet</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 <p>For more information about flowvision, please visit <a href="https://flowvision.readthedocs.io/en/latest/index.html">flowvision documentation</a>. </p>
